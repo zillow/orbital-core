@@ -2,7 +2,7 @@ import os
 from setuptools import setup, find_packages
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-README_PATH = os.path.join(base, "README.rst")
+README_PATH = os.path.join(BASE, "README.rst")
 
 install_requires = [
     'aiohttp-transmute',
