@@ -104,3 +104,4 @@ pip-selfcheck.json
 bin
 include
 VERSION
+.pytest_cache
