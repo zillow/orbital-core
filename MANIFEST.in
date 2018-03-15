@@ -1,4 +1,4 @@
 include README.md
 include MANIFEST.in
 include VERSION
-recursive-include orbital_core/routes/templates *
+recursive-include orbital_core/routes/templates/*
