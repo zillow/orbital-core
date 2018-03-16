@@ -26,6 +26,7 @@ def bootstrap_build(build):
     """
     build.task(main)
     build.task(test)
+    build.tasks.prepend("test", "main")
     build.task(publish)
     build.task(stamp)
     build.task(build_docs)

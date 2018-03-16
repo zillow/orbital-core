@@ -3,7 +3,7 @@ import multiprocessing
 
 def main(build):
     build.packages.install(".", develop=True)
-    build.tasks.run("build_docs")
+    build.run_task("build_docs")
 
 def test(build):
     build.packages.install("jedi")
