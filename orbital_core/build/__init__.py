@@ -1,7 +1,7 @@
 import os
 import subprocess
 from .tasks import (
-    main, test, publish, stamp, build_docs
+    main, test, publish, stamp, build_docs, copy_docs
 )
 
 def bootstrap_build(build):
@@ -30,3 +30,4 @@ def bootstrap_build(build):
     build.task(publish)
     build.task(stamp)
     build.task(build_docs)
+    build.task(copy_docs)

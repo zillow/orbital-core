@@ -1,9 +1,11 @@
 import os
 import multiprocessing
+import shutil
 
 def main(build):
     build.packages.install(".", develop=True)
     build.run_task("build_docs")
+    build.run_task("copy_docs")
 
 def test(build):
     build.packages.install("jedi")
@@ -42,3 +44,15 @@ def build_docs(build):
         os.path.join(build.root, "docs"),
         os.path.join(build.root, "target", "docs")
     ])
+
+def copy_docs(build):
+    """ copy documentation into the application directory. This allows
+    the docs to be packaged with the app itself.
+    """
+    doc_dir = os.path.join(build.root, build.config["module"], "docs")
+    if os.path.exists(doc_dir):
+        shutil.rmtree(doc_dir)
+    shutil.copytree(
+        os.path.join(build.root, "target", "docs"),
+        os.path.join(build.root, build.config["module"], "docs")
+    )

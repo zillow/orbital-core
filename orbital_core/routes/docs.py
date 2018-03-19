@@ -8,7 +8,7 @@ async def redirect_to_index(request):
 
 
 def add_docs(app, app_root):
-    doc_root = os.path.join(app_root, "target", "docs")
+    doc_root = os.path.join(app_root, "docs")
     app.router.add_route('GET', '/docs', redirect_to_index)
     app.router.add_route('GET', '/docs/', redirect_to_index)
     app.router.add_static('/docs', doc_root)
