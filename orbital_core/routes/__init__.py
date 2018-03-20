@@ -6,11 +6,7 @@ from .docs import add_docs
 
 async def ping(request):
     status = 200
-    if request.app[SHUTDOWN_KEY]:
-        status = 400
-    return web.json_response({
-        "will_shutdown": request.app[SHUTDOWN_KEY]
-    }, status=status)
+    return web.json_response({})
 
 
 async def index(request):

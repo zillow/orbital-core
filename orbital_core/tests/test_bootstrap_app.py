@@ -28,3 +28,8 @@ async def test_app_sanity(cli):
     """ sanity check, to see if bootstrap_app works. """
     resp = await cli.get('/')
     assert resp.status == 200
+
+async def test_app_ping(cli):
+    """ sanity check, to see if bootstrap_app works. """
+    resp = await cli.get('/monitor/ping')
+    assert resp.status == 200

@@ -106,3 +106,4 @@ include
 VERSION
 .pytest_cache
 !orbital_core/build
+orbital_core/docs
