@@ -3,12 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to orbital-core's documentation!
-========================================
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+Orbital-Core
+============
 
 What is Orbital Core?
 =====================
@@ -23,7 +19,7 @@ This documentation explains not only how to use orbital-core, but also the
 standards and practices that are followed in an orbital application. The
 intention is to be a one-stop guide for someone to understand how orbital apps are constructed, and how to navigate the codebase.
 
-Bootstrapping and Orbital Service
+Bootstrapping an Orbital Service
 *********************************
 
 During the initialization of your aiohttp app object, call orbital_core.bootstrap_app:
@@ -51,6 +47,12 @@ What Orbital Core Provides
 * mounting of Sphinx documentation, located at the application root directory, under /docs.
 * command line to extract swagger json from bootstrapped app objects.
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   best-practices
+   libraries
 
 
 
