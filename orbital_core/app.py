@@ -11,9 +11,4 @@ def bootstrap_app(app, root_dir=None,
     """
     app["service_name"] = service_name
     app["service_description"] = service_description
-    app.on_startup.append(on_startup)
     add_routes(app, root_dir)
-
-
-async def on_startup(app):
-    pass

@@ -1,3 +1,6 @@
+import aiohttp_cors
+from aiohttp import web
+
 def enable_cors(app):
     """
     Globally enable CORS.

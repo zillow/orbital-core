@@ -4,18 +4,19 @@ import json
 import asyncio
 import pytest
 from aiohttp import web
-from orbital_core import bootstrap_app
+from orbital_core import bootstrap_app, enable_cors
 
 APP_ROOT = os.path.dirname(__file__)
 
 
 @pytest.fixture
 def app(loop):
-    app = web.Application(loop=loop)
+    app = web.Application()
     bootstrap_app(app, APP_ROOT,
                   service_name="example",
                   service_description="example service",
                   min_cpu_percent_for_capture=0)
+    enable_cors(app)
     return app
 
 
