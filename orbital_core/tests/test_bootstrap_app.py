@@ -14,8 +14,7 @@ def app(loop):
     app = web.Application()
     bootstrap_app(app, APP_ROOT,
                   service_name="example",
-                  service_description="example service",
-                  min_cpu_percent_for_capture=0)
+                  service_description="example service")
     enable_cors(app)
     return app
 
