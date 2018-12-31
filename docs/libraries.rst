@@ -4,6 +4,7 @@ Libraries Used
 Orbital is built upon multiple technologies. They are listed here.
 
 * `aiohttp <https://aiohttp.readthedocs.io/en/stable/>`_ for the core web framework
+* `gunicorn <https://gunicorn.org/>`_ for the web server
 * `pytest <https://pytest.readthedocs.io/en/latest/>`_ for running unit tests
 * `sphinx <http://www.sphinx-doc.org/>`_ for embedded documentation
 * `swagger <https://aiohttp.readthedocs.io/en/stable/>`_ for documentating APIs
