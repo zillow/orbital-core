@@ -15,6 +15,7 @@ install_requires = [
     'aiohttp_cors',
     'docopt',
     'jinja2',
+    'aiozipkin'
 ]
 
 setup(
