@@ -11,11 +11,14 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 README_PATH = os.path.join(BASE, "README.rst")
 
 install_requires = [
+    'aiohttp',
     'aiohttp-transmute',
     'aiohttp_cors',
     'docopt',
     'jinja2',
-    'aiozipkin'
+    'aiozipkin',
+    'aiotask_context',
+    'orbital-core'
 ]
 
 setup(

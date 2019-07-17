@@ -3,12 +3,11 @@ import aiotask_context
 import aiozipkin
 import logging
 from traceback import format_exception
-from typing import Set
+from typing import Set, Dict
 from aiohttp.web import HTTPException, Application, HTTPInternalServerError, Request
 from aiozipkin import APP_AIOZIPKIN_KEY, REQUEST_AIOZIPKIN_KEY
 from aiozipkin.constants import HTTP_STATUS_CODE, HTTP_ROUTE
-from aiozipkin.helpers import TRACE_ID_HEADER, SPAN_ID_HEADER, PARENT_ID_HEADER, \
-    make_context, parse_sampled, parse_debug
+from aiozipkin.helpers import make_context, parse_sampled, parse_debug
 from aiozipkin.record import Record
 from aiozipkin.span import SpanAbc
 from aiozipkin.tracer import Tracer
@@ -39,7 +38,7 @@ class TracingTransport(Transport):
             "xti": data["traceId"],
             "xsi": data["id"],
             "xpi": data["parentId"],
-            "xsb": '1' if record._context.sampled else '0', # Sampled
+            "xsb": '1' if record._context.sampled else '0',  # Sampled
             "xfl": data["debug"], # Flags
             "spn": data["tags"].get(HTTP_ROUTE, data["name"].split(" ")[1]),
             "spt": data["tags"],
@@ -50,8 +49,7 @@ class TracingTransport(Transport):
 
 
 def configure_tracing(app: Application, route_blacklist: Set[str]):
-    # aiocontext is how tracing context is pinned per
-    # coroutine, so it must be set.
+    # aio-context is how tracing context is pinned per co-routine, so it must be set.
     # app.loop is not accessible before startup. Setting it as a
     # startup task ensures that it will exist before a call occurs.
     app.on_startup.append(_add_context_task_factory)
@@ -62,7 +60,7 @@ def configure_tracing(app: Application, route_blacklist: Set[str]):
     return _setup(app, tracer, route_blacklist)
 
 
-async def _add_context_task_factory(app):
+async def _add_context_task_factory(app: Application):
     """
     add the aiotask context task factory, ensuring
     that new tasks will be able to carry context.
@@ -70,11 +68,11 @@ async def _add_context_task_factory(app):
     app.loop.set_task_factory(aiotask_context.task_factory)
 
 
-def get_tracer(app):
+def get_tracer(app: Application):
     return aiozipkin.get_tracer(app)
 
 
-def get_trace_config(app):
+def get_trace_config(app: Application):
     return aiozipkin.make_trace_config(get_tracer(app))
 
 
@@ -88,7 +86,7 @@ def get_span_context():
         return None
 
 
-def _set_span_properties(span, span_properties, request):
+def _set_span_properties(span, span_properties: Dict[str, str]):
     for key, value in span_properties.items():
         span.tag(key, value)
 
@@ -104,7 +102,7 @@ def _get_span(request: Request, tracer: Tracer, sample: bool=True) -> SpanAbc:
     return tracer.join_span(context)
 
 
-def _get_middlware(app: Application, route_blacklist: Set[str]):
+def _get_middleware(route_blacklist: Set[str]):
     async def middleware_factory(app, handler):
         async def aiozipkin_middleware(request):
             tracer = request.app[APP_AIOZIPKIN_KEY]
@@ -140,7 +138,7 @@ def _get_middlware(app: Application, route_blacklist: Set[str]):
 
 def _setup(app: Application, tracer: Tracer, route_blacklist: Set[str]) -> Application:
     app[APP_AIOZIPKIN_KEY] = tracer
-    app.middlewares.append(_get_middlware(app, route_blacklist))
+    app.middlewares.append(_get_middleware(route_blacklist))
 
     async def close_aiozipkin(app):
         await app[APP_AIOZIPKIN_KEY].close()

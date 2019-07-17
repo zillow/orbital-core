@@ -1,13 +1,15 @@
+from aiohttp.web import Application
+from typing import List, Dict
 from .routes import add_routes
-from .utils.tracing import configure_tracing, get_trace_config
 from .session import ExtendedClientSession
+from .utils.tracing import configure_tracing, get_trace_config
 
 
-def bootstrap_app(app, root_dir=None,
-                  service_name="my service",
-                  service_description="this is a service.",
-                  tracing_route_blacklist=None,
-                  span_properties=None):
+def bootstrap_app(app, root_dir: str = None,
+                  service_name: str = "my service",
+                  service_description: str = "this is a service.",
+                  tracing_route_blacklist: List[str] = [],
+                  span_properties: Dict[str, str] = {}):
     """
     This should be called by every application using Orbital, to eliminate
     boilerplate and provide common functionality.
@@ -18,12 +20,10 @@ def bootstrap_app(app, root_dir=None,
     app.on_startup.append(on_startup)
     add_routes(app, root_dir)
 
-    configure_tracing(app, tracing_route_blacklist or {
-        '/monitor/ping',
-    })
+    configure_tracing(app, tracing_route_blacklist)
 
 
-async def create_http_client(app):
+async def create_http_client(app: Application):
     if "http" not in app:
         app["http"] = ExtendedClientSession(
             trace_configs=[get_trace_config(app)])
@@ -33,5 +33,5 @@ async def create_http_client(app):
         app.on_cleanup.append(close_session)
 
 
-async def on_startup(app):
+async def on_startup(app: Application):
     await create_http_client(app)

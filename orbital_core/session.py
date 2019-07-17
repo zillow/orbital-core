@@ -1,20 +1,11 @@
 import logging
 
 from aiohttp import ClientSession
-from aiohttp import ServerDisconnectedError, ServerConnectionError
-import backoff
-
 from .utils import tracing
 
 LOG = logging.getLogger(__name__)
-MAX_TRIES = 2
 
 
-@backoff.on_exception(
-    backoff.expo,
-    (ServerDisconnectedError, ServerConnectionError),
-    max_tries=MAX_TRIES,
-)
 async def wrap_request(request_func, *args, **kargs):
     ctx = tracing.get_span_context()
     if ctx:
@@ -45,6 +36,3 @@ class ExtendedClientSession(ClientSession):
 
     async def head(self, *args, **kargs):
         return await wrap_request(super().head, *args, **kargs)
-
-
-ExtendedClientSession = ExtendedClientSession
