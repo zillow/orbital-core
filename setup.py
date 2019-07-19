@@ -14,11 +14,10 @@ install_requires = [
     'aiohttp',
     'aiohttp-transmute',
     'aiohttp_cors',
-    'docopt',
-    'jinja2',
-    'aiozipkin',
     'aiotask_context',
-    'orbital-core'
+    'aiozipkin',
+    'docopt',
+    'jinja2'
 ]
 
 setup(

@@ -48,13 +48,14 @@ class TracingTransport(Transport):
         }
 
 
-def configure_tracing(app: Application, route_blacklist: Set[str]):
+def configure_tracing(app: Application, route_blacklist: Set[str],
+                      sample_rate: float, transport: Transport):
     # aio-context is how tracing context is pinned per co-routine, so it must be set.
     # app.loop is not accessible before startup. Setting it as a
     # startup task ensures that it will exist before a call occurs.
     app.on_startup.append(_add_context_task_factory)
-    sampler = aiozipkin.Sampler(sample_rate=1.0)
-    transport = TracingTransport()
+    sampler = aiozipkin.Sampler(sample_rate=sample_rate)
+    transport = transport() if transport else TracingTransport()
     endpoint = aiozipkin.create_endpoint(app["service_name"])
     tracer = aiozipkin.Tracer(transport, sampler, endpoint)
     return _setup(app, tracer, route_blacklist)
