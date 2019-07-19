@@ -114,7 +114,7 @@ def _get_middleware(route_blacklist: Set[str]):
 
             with span:
                 aiozipkin.aiohttp_helpers._set_span_properties(span, request)
-                _set_span_properties(span, app["span_properties"], request)
+                _set_span_properties(span, app["span_properties"])
                 try:
                     resp = await handler(request)
                 except HTTPException as e:
