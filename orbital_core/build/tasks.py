@@ -16,7 +16,7 @@ def test(build):
     build.packages.install("pytest-runfailed")
     build.executables.run([
         "py.test", "--cov", build.config["module"],
-        "{0}/tests".format(build.config["module"]),
+        os.path.join(build.root, build.config["module"], "tests"),
         "--cov-report", "term-missing",
         "-n", "{0}".format(multiprocessing.cpu_count())
     ] + build.options.args)
