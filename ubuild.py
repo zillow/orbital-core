@@ -1,11 +1,15 @@
-import os
-import subprocess
 from uranium import current_build
 
-current_build.config.set_defaults({
-    "module": "orbital_core"
-})
+current_build.packages.install("uranium-plus[vscode]")
+import uranium_plus
 
-current_build.packages.install(".", develop=True)
-from orbital_core.build import bootstrap_build
-bootstrap_build(current_build)
+current_build.config.update(
+    {
+        "uranium-plus": {
+            "module": "orbital_core",
+            "test": {"packages": ["pytest-aiohttp", "pytest-xdist"]},
+        }
+    }
+)
+
+uranium_plus.bootstrap(current_build)
