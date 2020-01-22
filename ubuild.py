@@ -8,6 +8,7 @@ current_build.config.update(
         "uranium-plus": {
             "module": "orbital_core",
             "test": {"packages": ["pytest-aiohttp", "pytest-xdist"]},
+            "publish": {"additional_args": ["--release"]},
         }
     }
 )
